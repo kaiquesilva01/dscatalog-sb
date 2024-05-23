@@ -1,48 +1,55 @@
-package com.developer.dscatalog.entities;
+package com.developer.dscatalog.dto;
 
-import jakarta.persistence.*;
+import com.developer.dscatalog.entities.Category;
+import com.developer.dscatalog.entities.Product;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 import java.time.Instant;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+public class ProductDTO {
 
-@Entity
-@Table(name = "tb_product")
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-
-    @Column(columnDefinition = "TEXT")
     private String description;
     private Double price;
     private String imgUrl;
-
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant date;
 
-    @ManyToMany
-    @JoinTable(name = "tb_product_category",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id"))
-    Set<Category> categories;
+    private List<CategoryDTO> categories = new ArrayList<>();
 
-    public Product() {
-        categories = new HashSet<>();
-    }
+    public ProductDTO() {}
 
-    public Product(Long id, String name, String description, Double price, String imgUrl, Instant date) {
+    public ProductDTO(Long id, String name, String description, Double price, String imgUrl, Instant date) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.imgUrl = imgUrl;
         this.date = date;
-        categories = new HashSet<>();
     }
+
+    public ProductDTO(Product product) {
+        this.id = product.getId();
+        this.name = product.getName();
+        this.description = product.getDescription();
+        this.price = product.getPrice();
+        this.imgUrl = product.getImgUrl();
+        this.date = product.getDate();
+    }
+    public ProductDTO(Product product, Set<Category> categories) {
+        this(product);
+        categories.forEach(cat -> this.categories.add(new CategoryDTO(cat)));
+        // pra cada category que passa no meu construtor , recebera um new DTO
+    }
+
+
 
     public Long getId() {
         return id;
@@ -92,7 +99,7 @@ public class Product {
         this.date = date;
     }
 
-    public Set<Category> getCategories() {
+    public List<CategoryDTO> getCategories() {
         return categories;
     }
 
@@ -101,9 +108,9 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Product product = (Product) o;
+        ProductDTO that = (ProductDTO) o;
 
-        return Objects.equals(id, product.id);
+        return Objects.equals(id, that.id);
     }
 
     @Override
