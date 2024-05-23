@@ -2,10 +2,6 @@ package com.developer.dscatalog.dto;
 
 import com.developer.dscatalog.entities.Category;
 import com.developer.dscatalog.entities.Product;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 import java.time.Instant;
 import java.util.ArrayList;
