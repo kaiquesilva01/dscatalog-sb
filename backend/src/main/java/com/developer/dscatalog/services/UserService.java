@@ -1,9 +1,6 @@
 package com.developer.dscatalog.services;
 
-import com.developer.dscatalog.dto.CategoryDTO;
-import com.developer.dscatalog.dto.RoleDTO;
-import com.developer.dscatalog.dto.UserDTO;
-import com.developer.dscatalog.dto.UserInsertDTO;
+import com.developer.dscatalog.dto.*;
 import com.developer.dscatalog.entities.Category;
 import com.developer.dscatalog.entities.Role;
 import com.developer.dscatalog.entities.User;
@@ -59,7 +56,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO update(Long id, UserDTO dto) {
+    public UserDTO update(Long id, UserUpdateDTO dto) {
         try {
             User entity = repository.getReferenceById(id);
             copyDtoToEntity(dto, entity);
